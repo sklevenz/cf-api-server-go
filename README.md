@@ -1,7 +1,7 @@
 # cf-api-server-go
 
-[![Test Status](https://github.com/sklevenz/cf-api-server-go/actions/workflows/test.yaml/badge.svg)](https://github.com/sklevenz/cf-api-server/actions)
-[![Build Status](https://github.com/sklevenz/cf-api-server-go/actions/workflows/build.yaml/badge.svg)](https://github.com/sklevenz/cf-api-server/actions)
+[![Test Status](https://github.com/sklevenz/cf-api-server-go/actions/workflows/test.yaml/badge.svg)](https://github.com/sklevenz/cf-api-server-go/actions)
+[![Build Status](https://github.com/sklevenz/cf-api-server-go/actions/workflows/build.yaml/badge.svg)](https://github.com/sklevenz/cf-api-server-go/actions)
 
 mplementation of the [cf-api-spec](https://github.com/sklevenz/cf-api-spec) in Go. This project provides a Go-based solution adhering to the Cloud Foundry API specifications, enabling seamless integration and usage for Cloud Foundry-related development.
 
@@ -23,6 +23,7 @@ cf-api-server/
 │   ├── services/         # Business logic or service layer
 │   │   ├── api_service.go
 │   │   └── ...
+│   ├── server/           # HTTP server implementation
 │   ├── middleware/       # Middleware for request processing
 │   │   ├── logging.go
 │   │   ├── auth.go
@@ -39,8 +40,7 @@ cf-api-server/
 │   │   └── ...
 │   └── ...
 ├── test/                 # Tests and test utilities
-│   ├── integration/
-│   ├── unit/
+│   ├── integration/      # Integration tests
 │   └── ...
 ├── go.mod                # Go module file
 ├── go.sum                # Go module checksum file
@@ -57,6 +57,7 @@ This directory contains core application logic that is not intended to be expose
 
 - **`handlers/`**: Defines HTTP route handlers that process incoming requests and return responses.
 - **`services/`**: Implements the business logic and acts as an intermediary between handlers and the data layer.
+- **`server/`**: Implements the HTTP server code to offload the main entry point.
 - **`middleware/`**: Contains reusable middleware functions for processing HTTP requests, such as logging or authentication.
 - **`config/`**: Manages application configurations, such as environment variables and settings.
 

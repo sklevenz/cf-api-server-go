@@ -10,6 +10,9 @@ import (
 )
 
 func TestServerIntegration(t *testing.T) {
+	// Wait befor starting the server
+	time.Sleep(1 * time.Second)
+
 	// Start the server in a separate goroutine
 	go func() {
 		server.StartServer()
