@@ -1,0 +1,26 @@
+name: Test CF API Server
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go environment
+        uses: actions/setup-go@v4
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Build CF API Server
+        run: bash scripts/test.sh
