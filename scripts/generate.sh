@@ -4,7 +4,7 @@
 # Dateien definieren
 CONFIG_FILE="./config.yaml"
 API_SPEC="./spec/openapi.yaml"
-OUTPUT_DIR="./internal/gen"
+OUTPUT_DIR="./internal/generate"
 OUTPUT_FILE="$OUTPUT_DIR/api_generated.go"
 
 # Stelle sicher, dass das Zielverzeichnis existiert
