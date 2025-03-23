@@ -12,6 +12,7 @@ This project is structured to facilitate maintainability, scalability, and clari
 ```
 cf-api-server/
 ├── script/              # Utility scripts for run, build, test, code generation ...
+├── cfg/                 # Various configuration files
 ├── cmd/
 │   └── server/
 │       └── main.go       # Entry point of the application
