@@ -1,4 +1,4 @@
-package: gen
+package: generated
 generate:
-  - types
-  - server
+  models: true
+  std-http-server: true
