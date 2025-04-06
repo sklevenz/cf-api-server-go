@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/sklevenz/cf-api-server/internal/generated"
+	"github.com/sklevenz/cf-api-server/pkg/httpx"
 )
 
 const jsonInput = `
@@ -163,6 +164,8 @@ func (Server) GetRoot(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal([]byte(jsonInput), &root); err != nil {
 		panic(err)
 	}
+
+	w.Header().Set(httpx.HeaderContentType, httpx.ContentTypeJSON)
 
 	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(root)

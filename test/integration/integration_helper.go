@@ -38,12 +38,17 @@ func startTestServer(t *testing.T) (baseURL string, shutdown func()) {
 }
 
 // doRequest sends a GET request and returns the response body as a string.
-func doRequest(t *testing.T, url string) string {
+func doRequestWithResponse(t *testing.T, url string) (*http.Response, string) {
 	resp, err := http.Get(url)
 	if err != nil {
-		t.Fatalf("request failed: %v", err)
+		t.Fatalf("failed to make request: %v", err)
 	}
 	defer resp.Body.Close()
-	body, _ := io.ReadAll(resp.Body)
-	return string(body)
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("failed to read body: %v", err)
+	}
+
+	return resp, string(data)
 }

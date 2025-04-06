@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/sklevenz/cf-api-server/internal/handler"
+	"github.com/sklevenz/cf-api-server/pkg/httpx"
 )
 
 func TestGetRoot(t *testing.T) {
@@ -45,5 +46,21 @@ func TestGetRoot_Redirect(t *testing.T) {
 	// Expects redirect location to "/"
 	if loc := resp.Header.Get("Location"); loc != "/" {
 		t.Errorf("expected redirect to '/', got %q", loc)
+	}
+}
+
+func TestGetRoot_ContentTypeJSON(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	w := httptest.NewRecorder()
+
+	s := handler.Server{}
+	s.GetRoot(w, req)
+
+	resp := w.Result()
+	defer resp.Body.Close()
+
+	contentType := resp.Header.Get(httpx.HeaderContentType)
+	if contentType != httpx.ContentTypeJSON {
+		t.Errorf("expected %q %q, got %q", httpx.HeaderContentType, httpx.ContentTypeJSON, contentType)
 	}
 }
