@@ -3,17 +3,24 @@ package server_test
 import (
 	"net"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/sklevenz/cf-api-server/internal/server"
+	"github.com/sklevenz/cf-api-server/pkg/logger"
 )
+
+func TestMain(m *testing.M) {
+	logger.Log = logger.New(logger.LevelInfo, false, nil)
+	os.Exit(m.Run())
+}
 
 func TestNewHTTPServer(t *testing.T) {
 	// Define a test address
 	addr := "127.0.0.1:1234"
 
 	// Create a new HTTP server using the test address
-	srv := server.NewHTTPServer(addr)
+	srv := server.NewHTTPServer(addr, "abc")
 
 	// Ensure the server is not nil
 	if srv == nil {
@@ -33,7 +40,7 @@ func TestNewHTTPServer(t *testing.T) {
 
 func TestIntegrationServer(t *testing.T) {
 	// Create a new HTTP server with a random available port
-	srv := server.NewHTTPServer("127.0.0.1:0")
+	srv := server.NewHTTPServer("127.0.0.1:0", "abc")
 
 	// Manually create a listener to retrieve the actual port
 	ln, err := net.Listen("tcp", srv.Addr)

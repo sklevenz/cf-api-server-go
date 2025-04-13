@@ -1,0 +1,65 @@
+2025-04-13 17:54:51 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 17:54:51 [INFO] Use -h or --help to display available flags.
+2025-04-13 17:54:51 [INFO] Starting server 0.0.0.0:8888
+2025-04-13 17:58:11 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 17:58:11 [INFO] Use -h or --help to display available flags.
+2025-04-13 17:58:11 [INFO] Starting server 0.0.0.0:8888
+2025-04-13 17:58:14 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 17:58:14 [INFO] Use -h or --help to display available flags.
+2025-04-13 17:58:14 [INFO] Starting server 0.0.0.0:8888
+2025-04-13 17:58:16 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 17:58:16 [INFO] Use -h or --help to display available flags.
+2025-04-13 17:58:16 [INFO] Starting server 0.0.0.0:8888
+2025-04-13 18:14:18 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 18:14:18 [INFO] Use -h or --help to display available flags.
+2025-04-13 18:14:18 [INFO] Starting server 0.0.0.0:8888
+2025-04-13 18:14:34 [INFO] GET /
+2025-04-13 18:14:47 [INFO] GET /
+2025-04-13 18:14:49 [INFO] GET /
+2025-04-13 18:14:50 [INFO] GET /
+2025-04-13 18:14:51 [INFO] GET /
+2025-04-13 18:14:52 [INFO] GET /
+2025-04-13 18:14:53 [INFO] GET /
+2025-04-13 18:14:54 [INFO] GET /
+2025-04-13 18:14:55 [INFO] GET /
+2025-04-13 18:23:33 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 18:23:33 [INFO] Use -h or --help to display available flags.
+2025-04-13 18:23:33 [INFO] Starting server 0.0.0.0:8888
+2025-04-13 18:23:35 [INFO] GET /
+2025-04-13 18:23:35 [INFO] GET /
+2025-04-13 18:24:16 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 18:24:16 [INFO] Use -h or --help to display available flags.
+2025-04-13 18:24:16 [INFO] Starting server 0.0.0.0:8888
+2025-04-13 18:24:19 [INFO] GET /
+2025-04-13 18:24:19 [INFO] &{GET /?bla HTTP/1.1 1 1 map[Accept:[*/*] User-Agent:[curl/8.7.1]] {} <nil> 0 [] false localhost:8888 map[] map[] <nil> map[] [::1]:54967 /?bla <nil> <nil> <nil>  0x140000301e0 <nil> [] map[]}
+2025-04-13 18:24:19 [INFO] GET /
+2025-04-13 18:24:45 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 18:24:45 [INFO] Use -h or --help to display available flags.
+2025-04-13 18:24:45 [INFO] Starting server 0.0.0.0:8888
+2025-04-13 18:24:47 [INFO] GET /
+2025-04-13 18:24:47 [INFO] /?bla7
+2025-04-13 18:24:47 [INFO] GET /
+2025-04-13 18:24:56 [INFO] GET /
+2025-04-13 18:24:56 [INFO] /?bla
+2025-04-13 18:24:56 [INFO] GET /
+2025-04-13 18:25:08 [INFO] GET /
+2025-04-13 18:25:08 [INFO] /?bla
+2025-04-13 18:25:08 [INFO] GET /
+2025-04-13 18:25:59 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 18:25:59 [INFO] Use -h or --help to display available flags.
+2025-04-13 18:26:02 [INFO] GET /?bla
+2025-04-13 18:26:02 [INFO] GET /
+2025-04-13 18:26:03 [INFO] GET /?bla
+2025-04-13 18:26:03 [INFO] GET /
+2025-04-13 18:26:35 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 18:26:35 [INFO] Use -h or --help to display available flags.
+2025-04-13 18:26:38 [INFO] GET /?bla
+2025-04-13 18:26:43 [INFO] GET /
+2025-04-13 18:26:47 [INFO] GET /
+2025-04-13 18:26:49 [INFO] GET /
+2025-04-13 18:26:51 [INFO] GET /
+2025-04-13 18:26:52 [INFO] GET /
+2025-04-13 18:26:53 [INFO] GET /
+2025-04-13 18:26:53 [INFO] GET /
+2025-04-13 18:28:12 [INFO] Starting cf-api-server with settings: map[cfgDir:. logFilePath:./cf-api-server.log logFormat:text port:8888]
+2025-04-13 18:28:12 [INFO] Use -h or --help to display available flags.

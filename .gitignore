@@ -1,2 +1,4 @@
 gen
 .DS_Store
+.vscode
+cf-api-server-log

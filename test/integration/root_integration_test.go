@@ -3,10 +3,17 @@ package integration_test
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/sklevenz/cf-api-server/pkg/httpx"
+	"github.com/sklevenz/cf-api-server/pkg/logger"
 )
+
+func TestMain(m *testing.M) {
+	logger.Log = logger.New(logger.LevelInfo, false, nil)
+	os.Exit(m.Run())
+}
 
 // Test for / (root) endpoint.
 func TestRootEndpoint(t *testing.T) {

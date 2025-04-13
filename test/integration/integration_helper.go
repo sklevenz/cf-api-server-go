@@ -11,6 +11,8 @@ import (
 	"github.com/sklevenz/cf-api-server/internal/server"
 )
 
+const testCfgDir = "./test/cfg"
+
 // startTestServer starts the server on a random port and returns the base URL and a shutdown function.
 func startTestServer(t *testing.T) (baseURL string, shutdown func()) {
 	// Listen on a random available port
@@ -20,7 +22,7 @@ func startTestServer(t *testing.T) (baseURL string, shutdown func()) {
 	}
 
 	// Create a new HTTP server using the actual listener address
-	srv := server.NewHTTPServer(listener.Addr().String())
+	srv := server.NewHTTPServer(listener.Addr().String(), testCfgDir)
 
 	// Run server in a goroutine
 	go func() {
