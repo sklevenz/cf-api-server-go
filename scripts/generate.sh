@@ -2,9 +2,9 @@
 
 
 # Dateien definieren
-CONFIG_FILE="./config.yaml"
+CONFIG_FILE="./cfg/oapi-codegen-config.yaml"
 API_SPEC="./spec/openapi.yaml"
-OUTPUT_DIR="./internal/generate"
+OUTPUT_DIR="./internal/generated"
 OUTPUT_FILE="$OUTPUT_DIR/api_generated.go"
 
 # Stelle sicher, dass das Zielverzeichnis existiert

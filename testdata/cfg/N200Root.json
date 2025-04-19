@@ -1,0 +1,44 @@
+{
+    "links": {
+      "self": {
+        "href": "https://{{API_BASE_URL}}/v3",
+        "meta": {
+          "description": "API root"
+        }
+      },
+      "apps": {
+        "href": "https://{{API_BASE_URL}}/v3/apps",
+        "method": "GET",
+        "meta": {
+          "description": "List all apps"
+        }
+      },
+      "buildpacks": {
+        "href": "https://{{API_BASE_URL}}/v3/buildpacks",
+        "method": "GET",
+        "meta": {
+          "description": "List all buildpacks"
+        }
+      },
+      "builds": {
+        "href": "https://{{API_BASE_URL}}/v3/builds",
+        "method": "POST",
+        "meta": {
+          "description": "Create a build"
+        }
+      },
+      "info": {
+        "href": "https://{{API_BASE_URL}}/v3/info",
+        "meta": {
+          "description": "Platform info"
+        }
+      },
+      "routes": {
+        "href": "https://{{API_BASE_URL}}/v3/routes",
+        "method": "GET",
+        "meta": {
+          "description": "List all routes"
+        }
+      }
+    }
+  }
