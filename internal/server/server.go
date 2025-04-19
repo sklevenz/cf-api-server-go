@@ -6,17 +6,25 @@ import (
 
 	"github.com/sklevenz/cf-api-server/internal/generated"
 	"github.com/sklevenz/cf-api-server/internal/handler"
+	"github.com/sklevenz/cf-api-server/internal/logger"
 	middleware "github.com/sklevenz/cf-api-server/internal/middelware"
-	"github.com/sklevenz/cf-api-server/pkg/logger"
 )
 
 // NewHTTPServer creates and configures a new HTTP server.
 func NewHTTPServer(addr string, cfgDir string) *http.Server {
-	srv := handler.NewServer(cfgDir)              // Initialize the API handler
-	mux := http.NewServeMux()                     // Create a new HTTP request multiplexer
-	handler := generated.HandlerFromMux(srv, mux) // Bind generated routes to the mux
+	srv := handler.NewServer(cfgDir) // Initialize the API handler
 
-	wrappedHandler := middleware.LoggingMiddleware(handler) // Wrap the handler with logging middleware
+	srv.LoadFavicon() // Load the favicon
+
+	apiMux := http.NewServeMux()                        // Create a new HTTP request multiplexer
+	apiHandler := generated.HandlerFromMux(srv, apiMux) // Bind generated routes to the mux
+
+	outerMux := http.NewServeMux()
+	outerMux.HandleFunc("/favicon.ico", srv.GetFavicon) // custom route
+
+	outerMux.Handle("/", apiHandler) // forward everything else to oapi
+
+	wrappedHandler := middleware.LoggingMiddleware(outerMux) // Wrap the handler with logging middleware
 
 	return &http.Server{
 		Handler: wrappedHandler,

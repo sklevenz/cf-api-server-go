@@ -6,8 +6,9 @@ import (
 	"os"
 	"testing"
 
+	"github.com/sklevenz/cf-api-server/internal/logger"
 	"github.com/sklevenz/cf-api-server/internal/server"
-	"github.com/sklevenz/cf-api-server/pkg/logger"
+	"github.com/sklevenz/cf-api-server/internal/testutil"
 )
 
 func TestMain(m *testing.M) {
@@ -19,8 +20,13 @@ func TestNewHTTPServer(t *testing.T) {
 	// Define a test address
 	addr := "127.0.0.1:1234"
 
+	testCfgDir, err := testutil.GetTestDataPath("cfg")
+	if err != nil {
+		t.Fatalf("failed to get test data path: %v", err)
+	}
+
 	// Create a new HTTP server using the test address
-	srv := server.NewHTTPServer(addr, "abc")
+	srv := server.NewHTTPServer(addr, testCfgDir)
 
 	// Ensure the server is not nil
 	if srv == nil {
@@ -39,8 +45,13 @@ func TestNewHTTPServer(t *testing.T) {
 }
 
 func TestIntegrationServer(t *testing.T) {
+	testCfgDir, err := testutil.GetTestDataPath("cfg")
+	if err != nil {
+		t.Fatalf("failed to get test data path: %v", err)
+	}
+
 	// Create a new HTTP server with a random available port
-	srv := server.NewHTTPServer("127.0.0.1:0", "abc")
+	srv := server.NewHTTPServer("127.0.0.1:0", testCfgDir)
 
 	// Manually create a listener to retrieve the actual port
 	ln, err := net.Listen("tcp", srv.Addr)

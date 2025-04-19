@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/sklevenz/cf-api-server/internal/logger"
 	"github.com/sklevenz/cf-api-server/internal/server"
-	"github.com/sklevenz/cf-api-server/pkg/logger"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 		port        = flag.Int("port", 8080, "HTTP server port")
 		cfgDir      = flag.String("cfgDir", "./cfg", "Path to configuration directory")
 		logFormat   = flag.String("logFormat", "text", "Log output format: text or json")
-		logFilePath = flag.String("logFilePath", "./cf-api-server.log", "Path to log file")
+		logFilePath = flag.String("logFilePath", "./gen/cf-api-server.log", "Path to log file")
 	)
 
 	flag.Parse()

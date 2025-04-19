@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/sklevenz/cf-api-server/internal/handler"
-	"github.com/sklevenz/cf-api-server/pkg/httpx"
+	"github.com/sklevenz/cf-api-server/internal/httpx"
 )
 
 func TestGetRoot(t *testing.T) {

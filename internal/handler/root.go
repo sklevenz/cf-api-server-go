@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/sklevenz/cf-api-server/internal/generated"
-	"github.com/sklevenz/cf-api-server/pkg/httpx"
+	"github.com/sklevenz/cf-api-server/internal/httpx"
 )
 
 // GetRoot handles GET requests to the root endpoint ("/").

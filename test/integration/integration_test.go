@@ -5,20 +5,31 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 
+	"github.com/sklevenz/cf-api-server/internal/logger"
 	"github.com/sklevenz/cf-api-server/internal/server"
+	"github.com/sklevenz/cf-api-server/internal/testutil"
 )
 
-const testCfgDir = "./test/cfg"
+func TestMain(m *testing.M) {
+	logger.Log = logger.New(logger.LevelInfo, false, nil)
+	os.Exit(m.Run())
+}
 
 // startTestServer starts the server on a random port and returns the base URL and a shutdown function.
-func startTestServer(t *testing.T) (baseURL string, shutdown func()) {
+func StartTestServer(t *testing.T) (baseURL string, shutdown func()) {
 	// Listen on a random available port
 	listener, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		t.Fatalf("failed to listen: %v", err)
+	}
+
+	testCfgDir, err := testutil.GetTestDataPath("cfg")
+	if err != nil {
+		t.Fatalf("failed to get test data path: %v", err)
 	}
 
 	// Create a new HTTP server using the actual listener address
@@ -40,7 +51,7 @@ func startTestServer(t *testing.T) (baseURL string, shutdown func()) {
 }
 
 // doRequest sends a GET request and returns the response body as a string.
-func doRequestWithResponse(t *testing.T, url string) (*http.Response, string) {
+func DoRequestWithResponse(t *testing.T, url string) (*http.Response, string) {
 	resp, err := http.Get(url)
 	if err != nil {
 		t.Fatalf("failed to make request: %v", err)

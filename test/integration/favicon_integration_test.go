@@ -9,7 +9,7 @@ import (
 )
 
 // Test for / (root) endpoint.
-func TestRootEndpoint(t *testing.T) {
+func TestFaviconEndpoint(t *testing.T) {
 	baseURL, shutdown := StartTestServer(t)
 	defer shutdown()
 

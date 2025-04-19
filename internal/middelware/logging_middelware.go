@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/sklevenz/cf-api-server/pkg/logger"
+	"github.com/sklevenz/cf-api-server/internal/logger"
 )
 
 // LoggingMiddleware logs all incoming HTTP requests.
