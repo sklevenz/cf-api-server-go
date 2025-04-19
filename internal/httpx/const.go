@@ -34,3 +34,7 @@ const ContentTypeJSON = "application/json"
 // ContentTypeXIcon represents the MIME type for icon files in the x-icon format.
 // This is an alternative MIME type for favicon.ico files in web applications.
 const ContentTypeXIcon = "image/x-icon"
+
+// ContentTypeText represents the MIME type for plain text content,
+// commonly used for text-based responses in web applications.
+const ContentTypeText = "text/plain"

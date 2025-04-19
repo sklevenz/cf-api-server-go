@@ -50,9 +50,18 @@ func StartTestServer(t *testing.T) (baseURL string, shutdown func()) {
 	}
 }
 
-// doRequest sends a GET request and returns the response body as a string.
-func DoRequestWithResponse(t *testing.T, url string) (*http.Response, string) {
-	resp, err := http.Get(url)
+func DoRequestWithResponse(t *testing.T, url string, headers map[string]string) (*http.Response, string) {
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+
+	for k, v := range headers {
+		req.Header.Set(k, v)
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
 	if err != nil {
 		t.Fatalf("failed to make request: %v", err)
 	}

@@ -13,7 +13,7 @@ func TestRootEndpoint(t *testing.T) {
 	baseURL, shutdown := StartTestServer(t)
 	defer shutdown()
 
-	resp, body := DoRequestWithResponse(t, baseURL)
+	resp, body := DoRequestWithResponse(t, baseURL, nil)
 
 	if resp.StatusCode != http.StatusOK {
 		t.Errorf("expected status 200 OK, got %d", resp.StatusCode)

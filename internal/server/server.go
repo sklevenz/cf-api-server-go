@@ -20,7 +20,8 @@ func NewHTTPServer(addr string, cfgDir string) *http.Server {
 	apiHandler := generated.HandlerFromMux(srv, apiMux) // Bind generated routes to the mux
 
 	outerMux := http.NewServeMux()
-	outerMux.HandleFunc("/favicon.ico", srv.GetFavicon) // custom route
+	outerMux.HandleFunc("/favicon.ico", srv.GetFaviconHandler) // custom route
+	outerMux.HandleFunc("/health", srv.GetHealthHandler)       // custom route
 
 	outerMux.Handle("/", apiHandler) // forward everything else to oapi
 
