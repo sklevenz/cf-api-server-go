@@ -7,7 +7,7 @@ import (
 	"github.com/sklevenz/cf-api-server/internal/httpx"
 )
 
-func (s *Server) GetFavicon(w http.ResponseWriter, r *http.Request) {
+func (s *Server) GetFaviconHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodOptions {
 		// Respond to OPTIONS request
 		w.Header().Set("Allow", "GET, OPTIONS")

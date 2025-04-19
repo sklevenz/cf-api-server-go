@@ -20,7 +20,7 @@ func TestOptionsFavicon(t *testing.T) {
 
 	s := handler.NewServer(cfgDir)
 	s.LoadFavicon()
-	s.GetFavicon(w, req)
+	s.GetFaviconHandler(w, req)
 
 	resp := w.Result()
 	defer resp.Body.Close()
@@ -37,7 +37,7 @@ func TestPutFavicon(t *testing.T) {
 
 	s := handler.NewServer(cfgDir)
 	s.LoadFavicon()
-	s.GetFavicon(w, req)
+	s.GetFaviconHandler(w, req)
 
 	resp := w.Result()
 	defer resp.Body.Close()
@@ -47,7 +47,7 @@ func TestPutFavicon(t *testing.T) {
 	}
 }
 
-func TestGetFavicon(t *testing.T) {
+func TestGetFaviconHandler(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/favicon.ico", nil)
 	w := httptest.NewRecorder()
 
@@ -55,7 +55,7 @@ func TestGetFavicon(t *testing.T) {
 
 	s := handler.NewServer(cfgDir)
 	s.LoadFavicon()
-	s.GetFavicon(w, req)
+	s.GetFaviconHandler(w, req)
 
 	resp := w.Result()
 	defer resp.Body.Close()
@@ -98,12 +98,12 @@ func TestGetFavicon(t *testing.T) {
 	}
 }
 
-func TestGetFavicon404(t *testing.T) {
+func TestGetFaviconHandler404(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/favicon.ico", nil)
 	w := httptest.NewRecorder()
 
 	s := handler.Server{}
-	s.GetFavicon(w, req)
+	s.GetFaviconHandler(w, req)
 
 	resp := w.Result()
 	defer resp.Body.Close()
