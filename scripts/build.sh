@@ -19,7 +19,7 @@ fi
 
 # Build the Go server
 echo "Building the server..."
-go build -o $OUTPUT_FILE $MAIN_FILE
+go build -ldflags "-X 'main.SemanticVersion=1.0.0' -X 'main.CommitID=abcd1234'" -o $OUTPUT_FILE $MAIN_FILE
 
 # Check if the build was successful
 if [ $? -eq 0 ]; then

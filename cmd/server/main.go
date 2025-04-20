@@ -9,6 +9,8 @@ import (
 	"github.com/sklevenz/cf-api-server/internal/server"
 )
 
+var SemanticVersion = "dev"
+
 func main() {
 	var (
 		port        = flag.Int("port", 8080, "HTTP server port")
@@ -39,8 +41,8 @@ func main() {
 	})
 
 	logger.Log.Info("Starting cf-api-server with settings: %v", fields)
+	logger.Log.Info("Version: %v", SemanticVersion)
 	logger.Log.Info("Use -h or --help to display available flags.")
 
-	server.StartServer(*port, *cfgDir)
-
+	server.StartServer(*port, *cfgDir, SemanticVersion)
 }
