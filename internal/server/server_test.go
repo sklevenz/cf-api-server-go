@@ -26,7 +26,7 @@ func TestNewHTTPServer(t *testing.T) {
 	}
 
 	// Create a new HTTP server using the test address
-	srv := server.NewHTTPServer(addr, testCfgDir)
+	srv := server.NewHTTPServer(addr, testCfgDir, "dev")
 
 	// Ensure the server is not nil
 	if srv == nil {
@@ -51,7 +51,7 @@ func TestIntegrationServer(t *testing.T) {
 	}
 
 	// Create a new HTTP server with a random available port
-	srv := server.NewHTTPServer("127.0.0.1:0", testCfgDir)
+	srv := server.NewHTTPServer("127.0.0.1:0", testCfgDir, "dev")
 
 	// Manually create a listener to retrieve the actual port
 	ln, err := net.Listen("tcp", srv.Addr)

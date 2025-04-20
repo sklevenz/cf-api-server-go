@@ -4,7 +4,6 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"path/filepath"
 	"strconv"
 	"testing"
 
@@ -16,10 +15,11 @@ func TestOptionsFavicon(t *testing.T) {
 	req := httptest.NewRequest(http.MethodOptions, "/favicon.ico", nil)
 	w := httptest.NewRecorder()
 
-	cfgDir := filepath.Join("..", "..", "testdata", "cfg")
+	s, err := handler.NewTestServer()
+	if err != nil {
+		t.Fatalf("failed to create test server: %v", err)
+	}
 
-	s := handler.NewServer(cfgDir)
-	s.LoadFavicon()
 	s.GetFaviconHandler(w, req)
 
 	resp := w.Result()
@@ -33,10 +33,10 @@ func TestPutFavicon(t *testing.T) {
 	req := httptest.NewRequest(http.MethodPut, "/favicon.ico", nil)
 	w := httptest.NewRecorder()
 
-	cfgDir := filepath.Join("..", "..", "testdata", "cfg")
-
-	s := handler.NewServer(cfgDir)
-	s.LoadFavicon()
+	s, err := handler.NewTestServer()
+	if err != nil {
+		t.Fatalf("failed to create test server: %v", err)
+	}
 	s.GetFaviconHandler(w, req)
 
 	resp := w.Result()
@@ -51,10 +51,10 @@ func TestGetFaviconHandler(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/favicon.ico", nil)
 	w := httptest.NewRecorder()
 
-	cfgDir := filepath.Join("..", "..", "testdata", "cfg")
-
-	s := handler.NewServer(cfgDir)
-	s.LoadFavicon()
+	s, err := handler.NewTestServer()
+	if err != nil {
+		t.Fatalf("failed to create test server: %v", err)
+	}
 	s.GetFaviconHandler(w, req)
 
 	resp := w.Result()

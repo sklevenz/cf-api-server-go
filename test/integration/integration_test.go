@@ -33,7 +33,7 @@ func StartTestServer(t *testing.T) (baseURL string, shutdown func()) {
 	}
 
 	// Create a new HTTP server using the actual listener address
-	srv := server.NewHTTPServer(listener.Addr().String(), testCfgDir)
+	srv := server.NewHTTPServer(listener.Addr().String(), testCfgDir, "dev")
 
 	// Run server in a goroutine
 	go func() {

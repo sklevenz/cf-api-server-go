@@ -11,10 +11,8 @@ import (
 )
 
 // NewHTTPServer creates and configures a new HTTP server.
-func NewHTTPServer(addr string, cfgDir string) *http.Server {
-	srv := handler.NewServer(cfgDir) // Initialize the API handler
-
-	srv.LoadFavicon() // Load the favicon
+func NewHTTPServer(addr string, cfgDir string, semver string) *http.Server {
+	srv := handler.NewServer(cfgDir, semver) // Initialize the API handler
 
 	apiMux := http.NewServeMux()                        // Create a new HTTP request multiplexer
 	apiHandler := generated.HandlerFromMux(srv, apiMux) // Bind generated routes to the mux
@@ -22,6 +20,7 @@ func NewHTTPServer(addr string, cfgDir string) *http.Server {
 	outerMux := http.NewServeMux()
 	outerMux.HandleFunc("/favicon.ico", srv.GetFaviconHandler) // custom route
 	outerMux.HandleFunc("/health", srv.GetHealthHandler)       // custom route
+	outerMux.HandleFunc("/version", srv.GetVersionHandler)     // custom route
 
 	outerMux.Handle("/", apiHandler) // forward everything else to oapi
 
@@ -42,8 +41,8 @@ func StartHTTPServer(srv *http.Server) {
 }
 
 // StartServer creates and starts the HTTP server on the given port.
-func StartServer(port int, cfgDir string) {
+func StartServer(port int, cfgDir string, semver string) {
 	addr := fmt.Sprintf("0.0.0.0:%d", port)
-	server := NewHTTPServer(addr, cfgDir)
+	server := NewHTTPServer(addr, cfgDir, semver)
 	StartHTTPServer(server)
 }
