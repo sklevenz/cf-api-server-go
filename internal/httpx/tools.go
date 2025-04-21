@@ -1,11 +1,11 @@
 package httpx
 
 import (
-	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/hex"
 )
 
 func GenerateETag(data []byte) string {
-	hash := sha1.Sum(data)
+	hash := sha256.Sum256(data)
 	return `"` + hex.EncodeToString(hash[:]) + `"`
 }
