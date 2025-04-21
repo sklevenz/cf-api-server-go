@@ -6,7 +6,7 @@ MAIN_FILE="./cmd/server/main.go"
 
 # Run the Go server
 echo "Starting the server..."
-go run "$MAIN_FILE"
+go run "$MAIN_FILE" $@
 
 # Check the exit code and handle normal termination
 EXIT_CODE=$?

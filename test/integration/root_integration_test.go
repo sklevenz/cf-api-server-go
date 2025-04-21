@@ -25,6 +25,8 @@ func TestRootEndpoint(t *testing.T) {
 
 	var jsonBody map[string]interface{}
 	if err := json.Unmarshal([]byte(body), &jsonBody); err != nil {
-		t.Errorf("expected valid JSON object, got: %s", body)
+		t.Errorf("expected valid JSON object, got: %v", body)
 	}
+
+	t.Logf("Body: %v", jsonBody)
 }

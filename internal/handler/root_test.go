@@ -21,7 +21,7 @@ func TestGetRoot(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to create test server: %v", err)
 	}
-	s.GetRoot(w, req)
+	s.GetApiRoot(w, req)
 
 	resp := w.Result()
 	defer resp.Body.Close()
@@ -34,7 +34,7 @@ func TestGetRoot(t *testing.T) {
 		t.Errorf("expected %q %q, got %q", httpx.HeaderContentType, httpx.ContentTypeJSON, contentType)
 	}
 
-	var root generated.N200Root
+	var root generated.Root
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("failed to read response body: %v", err)
@@ -43,9 +43,6 @@ func TestGetRoot(t *testing.T) {
 		t.Fatalf("failed to unmarshal response JSON: %v", err)
 	}
 
-	if root.Links == nil {
-		t.Fatal("expected Links to be present")
-	}
 	if root.Links.Self == nil {
 		t.Fatal("expected self link to be present")
 	}
@@ -53,15 +50,7 @@ func TestGetRoot(t *testing.T) {
 		t.Errorf("expected href to start with http://localhost, got %q", root.Links.Self.Href)
 	}
 
-	if root.Links.Self.Method == nil || *root.Links.Self.Method != "GET" {
-		t.Errorf("expected method to be GET, got %v", root.Links.Self.Method)
-	}
 	if root.Links.Self.Meta == nil {
 		t.Fatal("expected meta to be present")
-	}
-
-	title, ok := (*root.Links.Self.Meta)["title"]
-	if !ok || title != "Root endpoint" {
-		t.Errorf("expected meta.title to be 'Root endpoint', got %v", title)
 	}
 }

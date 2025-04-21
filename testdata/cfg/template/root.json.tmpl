@@ -1,9 +1,16 @@
 {
   "links": {
     "self": {
-      "href": "{{ .BaseURL }}/",
-      "meta": { "title": "Root endpoint" },
-      "method": "GET"
+      "href": "{{ .BaseURL }}/v3",
+      "meta": {
+        "version": "{{ .Version }}"
+      }
+    },
+    "cloud_controller_v3": {
+      "href": "{{ .BaseURL }}/v3",
+      "meta": {
+        "version": "{{ .Version }}"
+      }
     }
   }
 }

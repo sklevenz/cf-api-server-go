@@ -19,15 +19,22 @@ type VersionInfo struct {
 	SemanticVersion string `json:"semanticVersion"`
 }
 type Server struct {
-	cfgDir       string
+	absCfgDir    string
 	favicon      *[]byte
-	rootDocument *generated.N200Root
+	rootDocument *generated.Root
 	versionInfo  VersionInfo
 }
 
-func NewServer(cfgDir string, semver string) *Server {
+func NewServer(absCfgDir string, semver string) (*Server, error) {
+
+	absCfgDir, err := filepath.Abs(absCfgDir)
+	if err != nil {
+		logger.Log.Error("Failed to set absCfgDir: %v", err)
+		return nil, err
+	}
+
 	s := Server{
-		cfgDir: cfgDir,
+		absCfgDir: absCfgDir,
 		versionInfo: VersionInfo{
 			SemanticVersion: semver,
 		},
@@ -35,61 +42,59 @@ func NewServer(cfgDir string, semver string) *Server {
 	s.loadFavicon()
 	s.loadRootDocument()
 
-	return &s
+	return &s, nil
 }
 
 func NewTestServer() (*Server, error) {
-	cfgDir, err := testutil.GetTestDataPath("cfg")
+	absCfgDir, err := testutil.GetTestDataPath("cfg")
 	if err != nil {
 		logger.Log.Error("failed to get test data path: %v", err)
 		return nil, err
 	}
-	s := NewServer(cfgDir, "dev")
-	return s, nil
+	s, err := NewServer(absCfgDir, "dev")
+	return s, err
 }
 
-func (s *Server) loadFavicon() {
-	filePath := filepath.Join(s.cfgDir, "img", "favicon.ico")
-
-	filePath, err := filepath.Abs(filePath)
-	if err != nil {
-		logger.Log.Error("Failed to load favicon: %v", err)
-		return
-	}
+func (srv *Server) loadFavicon() {
+	filePath := filepath.Join(srv.absCfgDir, "img", "favicon.ico")
 
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		logger.Log.Error("Failed to load favicon: %v", err)
 		return
 	}
-	s.favicon = &data
+	logger.Log.Info("Read favicon: %v", filePath)
+	srv.favicon = &data
 }
 
 func (srv *Server) loadRootDocument() {
-	templateFileName := filepath.Join(srv.cfgDir, "template", "root.json.tmpl")
+	filePath := filepath.Join(srv.absCfgDir, "template", "root.json.tmpl")
+	logger.Log.Info("Read root document: %v", filePath)
 
-	tmpl, err := template.ParseFiles(templateFileName)
+	template, err := template.ParseFiles(filePath)
 	if err != nil {
 		logger.Log.Error("failed to parse root template: %v", err)
 	}
 
 	var buf bytes.Buffer
-	err = tmpl.Execute(&buf, struct {
+	err = template.Execute(&buf, struct {
 		BaseURL string
 		Version string
 	}{
 		BaseURL: "http://localhost:8080",
 		Version: srv.versionInfo.SemanticVersion,
 	})
-
 	if err != nil {
 		logger.Log.Error("failed to render root template: %v", err)
 	}
+	logger.Log.Debug("After template processing: \n%s", &buf)
 
-	var root generated.N200Root
+	var root generated.Root
 	if err := json.Unmarshal(buf.Bytes(), &root); err != nil {
 		logger.Log.Error("failed to unmarshal root JSON: %v", err)
 	}
+
+	logger.Log.Debug("Parsed root document: \n%+v", root)
 
 	srv.rootDocument = &root
 }

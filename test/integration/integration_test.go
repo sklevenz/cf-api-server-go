@@ -15,7 +15,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	logger.Log = logger.New(logger.LevelInfo, false, nil)
+	logger.Log = logger.New(logger.LevelDebug, false, nil)
 	os.Exit(m.Run())
 }
 
@@ -33,7 +33,10 @@ func StartTestServer(t *testing.T) (baseURL string, shutdown func()) {
 	}
 
 	// Create a new HTTP server using the actual listener address
-	srv := server.NewHTTPServer(listener.Addr().String(), testCfgDir, "dev")
+	srv, err := server.NewHTTPServer(listener.Addr().String(), testCfgDir, "dev")
+	if err != nil {
+		t.Fatalf("failed to create server: %v", err)
+	}
 
 	// Run server in a goroutine
 	go func() {

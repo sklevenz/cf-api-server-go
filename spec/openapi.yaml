@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: Cloud Foundry V3 API
   description: |-
@@ -18,8 +18,6 @@ info:
 servers:
   - url: http://127.0.0.1:4010
     description: Prism mock server
-  - url: https://api.example.com
-    description: Example server
 tags:
   - name: Apps
     description: |
@@ -146,21 +144,20 @@ tags:
 paths:
   /:
     get:
+      summary: Get API root metadata
+      description: |
+        Returns the root-level metadata of the API, including links to all major service components.  This endpoint serves as the main entry point for API discovery and navigation.
+      operationId: getApiRoot
+      security: []
       tags:
         - Root
-      summary: Get root
-      description: The Root endpoint provides the entry point for the Cloud Foundry API. It includes links to all the available resources and endpoints.
-      operationId: getRoot
-      security: []
       responses:
         '200':
-          $ref: '#/components/responses/200Root'
-        '401':
-          $ref: '#/components/responses/401Unauthorized'
-        '403':
-          $ref: '#/components/responses/403Forbidden'
+          $ref: '#/components/responses/root'
+        '400':
+          $ref: '#/components/responses/400'
         '500':
-          $ref: '#/components/responses/500InternalServerError'
+          $ref: '#/components/responses/500'
 components:
   securitySchemes:
     oauth:
@@ -169,270 +166,95 @@ components:
         implicit:
           authorizationUrl: https://uaa.cloudfoundry.local/api-oauth/dialog
           scopes:
-            cloud_controller.admin: Grants read and write access to all resources.
-            cloud_controller.admin_read_only: Grants read-only access to all resources.
-            cloud_controller.global_auditor: Grants read access to all resources.
-            cloud_controller.read: Grants read access to the Cloud Controller.
-            cloud_controller.write: Grants write access to the Cloud Controller.
-            cloud_controller.update_build_state: Allows the token bearer to update the state of a build. This is currently used only when updating builds.
-            cloud_controller_service_permissions.read: Grants read-only access to service instance permissions.
+            cloud_controller.admin: This scope provides read and write access to all resources
+            cloud_controller.admin_read_only: This scope provides read only access to all resources
+            cloud_controller.global_auditor: This scope provides read access to all resources
+            cloud_controller.read: Read access to the Cloud Controller
+            cloud_controller.write: Write access to the Cloud Controller
+            cloud_controller.update_build_state: This scope allows its bearer to update the state of a build; currently only used when updating builds
+            cloud_controller_service_permissions.read: This scope provides read only access for service instance permissions
     bearer:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: Authentication using a bearer token formatted as a JWT.
+      description: Bearer JWT token authentication
   schemas:
     link:
       type: object
+      required:
+        - href
       properties:
         href:
           type: string
           format: uri
-          description: The URL of the link.
-        method:
-          type: string
-          description: |
-            An optional field specifying the HTTP method to use when following the URL.
+          description: The URI reference to the resource.
         meta:
           type: object
-          description: |
-            An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-      required:
-        - href
-      description: |
-        Each link is keyed by its type and includes an `href` for the URL, an optional HTTP method for non-GET requests, and optional metadata.
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Application-specific error code
-          example: 10001
-        message:
-          type: string
-          description: Error message describing what went wrong
-          example: An unexpected error occurred.
-        timestamp:
-          type: string
-          format: date-time
-          description: Time the error occurred
-          example: '2025-04-06T14:00:00Z'
-        traceId:
-          type: string
-          description: Trace identifier to correlate logs and errors
-          example: abc123xyz
-      required:
-        - code
-        - message
-    error:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Application-specific error code
-          example: 10001
-        message:
-          type: string
-          description: Error message describing what went wrong
-          example: An unexpected error occurred.
-        timestamp:
-          type: string
-          format: date-time
-          description: Time the error occurred
-          example: '2025-04-06T14:00:00Z'
-        traceId:
-          type: string
-          description: Trace identifier to correlate logs and errors
-          example: abc123xyz
-      required:
-        - code
-        - message
+          description: Metadata related to the resource.
+          properties:
+            version:
+              type: string
+              description: The version identifier of the referenced resource.
+            host_key_fingerprint:
+              type: string
+              description: The fingerprint of the host's public key, used for security verification.
+            oauth_client:
+              type: string
+              description: The OAuth client identifier used for authentication purposes.
   responses:
-    200Root:
-      description: OK
+    '400':
+      description: Bad Request
+    '500':
+      description: Server Error
+    root:
+      description: List of API components and their endpoints
       content:
         application/json:
           schema:
             type: object
+            required:
+              - links
             properties:
               links:
                 type: object
+                description: A collection of API components and their root endpoints.
                 properties:
                   self:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the current endpoint
-                  apps:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Apps endpoint
-                  buildpacks:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Buildpacks endpoint
-                  builds:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Builds endpoint
-                  deployments:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Deployments endpoint
-                  domains:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Domains endpoint
-                  droplets:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Droplets endpoint
-                  environment_variable_groups:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Environment Variable Groups endpoint
-                  feature_flags:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Feature Flags endpoint
-                  info:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Info endpoint
-                  isolation_segments:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Isolation Segments endpoint
-                  jobs:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Jobs endpoint
-                  organization_quotas:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Organization Quotas endpoint
-                  organizations:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Organizations endpoint
-                  packages:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Packages endpoint
-                  processes:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Processes endpoint
-                  resource_matches:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Resource Matches endpoint
-                  roles:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Roles endpoint
-                  routes:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Routes endpoint
-                  security_groups:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Security Groups endpoint
-                  service_brokers:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Service Brokers endpoint
-                  service_credential_bindings:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Service Credential Bindings endpoint
-                  service_instances:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Service Instances endpoint
-                  service_offerings:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Service Offerings endpoint
-                  service_plans:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Service Plans endpoint
-                  service_plan_visibilities:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Service Plan Visibilities endpoint
-                  service_route_bindings:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Service Route Bindings endpoint
-                  service_usage_events:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Service Usage Events endpoint
-                  sidecars:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Sidecars endpoint
-                  space_quotas:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Space Quotas endpoint
-                  spaces:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Spaces endpoint
-                  stacks:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Stacks endpoint
-                  tasks:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Tasks endpoint
-                  users:
-                    allOf:
-                      - $ref: '#/components/schemas/link'
-                      - description: Link to the Users endpoint
-    401Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            unauthorizedError:
-              summary: Unauthorized access
-              value:
-                code: 10002
-                message: Authentication credentials were missing or invalid.
-                timestamp: '2025-04-06T14:15:00Z'
-                traceId: unauth-trace-456
-    403Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          examples:
-            forbiddenError:
-              summary: Access denied
-              value:
-                code: 10003
-                message: You do not have permission to access this resource.
-                timestamp: '2025-04-06T14:20:00Z'
-                traceId: forbid-trace-789
-    500InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          examples:
-            unexpectedError:
-              summary: Unexpected error
-              value:
-                code: 10001
-                message: An unexpected error occurred.
-                timestamp: '2025-04-06T14:00:00Z'
-                traceId: abc123xyz
+                    $ref: '#/components/schemas/link'
+                    description: Link to this API index document.
+                  cloud_controller_v2:
+                    $ref: '#/components/schemas/link'
+                    description: Entry point for the Cloud Controller V2 API.
+                  cloud_controller_v3:
+                    $ref: '#/components/schemas/link'
+                    description: Entry point for the Cloud Controller V3 API.
+                  network_policy_v0:
+                    $ref: '#/components/schemas/link'
+                    description: Entry point for the legacy network policy API (v0).
+                  network_policy_v1:
+                    $ref: '#/components/schemas/link'
+                    description: Entry point for the current network policy API (v1).
+                  login:
+                    $ref: '#/components/schemas/link'
+                    description: Endpoint for user login and authentication services.
+                  uaa:
+                    $ref: '#/components/schemas/link'
+                    description: Endpoint for the UAA (User Account and Authentication) API.
+                  credhub:
+                    $ref: '#/components/schemas/link'
+                    description: Not available — CredHub API is currently not exposed via this endpoint.
+                  routing:
+                    $ref: '#/components/schemas/link'
+                    description: Endpoint for managing routes and route mappings.
+                  logging:
+                    $ref: '#/components/schemas/link'
+                    description: Endpoint for logging-related APIs (deprecated or legacy).
+                  log_cache:
+                    $ref: '#/components/schemas/link'
+                    description: Endpoint for the Log Cache API, used to retrieve recent application logs.
+                  log_stream:
+                    $ref: '#/components/schemas/link'
+                    description: Endpoint for real-time application log streaming.
+                  app_ssh:
+                    $ref: '#/components/schemas/link'
+                    description: Endpoint for SSH access to running application instances.
