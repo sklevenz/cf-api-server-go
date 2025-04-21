@@ -17,7 +17,8 @@ type LogLevel int
 
 const (
 	// Log levels in increasing order of severity
-	LevelInfo LogLevel = iota
+	LevelDebug LogLevel = iota
+	LevelInfo
 	LevelWarn
 	LevelError
 )
@@ -65,6 +66,13 @@ func (l *Logger) log(lvl string, msg string, fields map[string]interface{}) {
 	fmt.Fprintln(l.writer, out)
 	if l.fileWriter != nil {
 		fmt.Fprintln(l.fileWriter, out)
+	}
+}
+
+// Error logs a message at DEBUG level.
+func (l *Logger) Debug(format string, args ...interface{}) {
+	if l.level <= LevelDebug {
+		l.log("DEBUG", fmt.Sprintf(format, args...), nil)
 	}
 }
 

@@ -12,6 +12,6 @@ import (
 // The function takes a testing.M instance, which manages the execution
 // of tests, and exits the program with the status code returned by m.Run().
 func TestMain(m *testing.M) {
-	logger.Log = logger.New(logger.LevelInfo, false, nil)
+	logger.Log = logger.New(logger.LevelDebug, false, nil)
 	os.Exit(m.Run())
 }

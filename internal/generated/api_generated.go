@@ -8,396 +8,51 @@ package generated
 import (
 	"fmt"
 	"net/http"
-	"time"
 )
 
-// Error defines model for Error.
-type Error struct {
-	// Code Application-specific error code
-	Code int `json:"code"`
-
-	// Message Error message describing what went wrong
-	Message string `json:"message"`
-
-	// Timestamp Time the error occurred
-	Timestamp *time.Time `json:"timestamp,omitempty"`
-
-	// TraceId Trace identifier to correlate logs and errors
-	TraceId *string `json:"traceId,omitempty"`
-}
-
-// Link Each link is keyed by its type and includes an `href` for the URL, an optional HTTP method for non-GET requests, and optional metadata.
+// Link defines model for link.
 type Link struct {
-	// Href The URL of the link.
+	// Href The URI reference to the resource.
 	Href string `json:"href"`
 
-	// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-	Meta *map[string]interface{} `json:"meta,omitempty"`
+	// Meta Metadata related to the resource.
+	Meta *struct {
+		// HostKeyFingerprint The fingerprint of the host's public key, used for security verification.
+		HostKeyFingerprint *string `json:"host_key_fingerprint,omitempty"`
 
-	// Method An optional field specifying the HTTP method to use when following the URL.
-	Method *string `json:"method,omitempty"`
+		// OauthClient The OAuth client identifier used for authentication purposes.
+		OauthClient *string `json:"oauth_client,omitempty"`
+
+		// Version The version identifier of the referenced resource.
+		Version *string `json:"version,omitempty"`
+	} `json:"meta,omitempty"`
 }
 
-// N200Root defines model for 200Root.
-type N200Root struct {
-	Links *struct {
-		Apps *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"apps,omitempty"`
-		Buildpacks *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"buildpacks,omitempty"`
-		Builds *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"builds,omitempty"`
-		Deployments *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"deployments,omitempty"`
-		Domains *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"domains,omitempty"`
-		Droplets *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"droplets,omitempty"`
-		EnvironmentVariableGroups *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"environment_variable_groups,omitempty"`
-		FeatureFlags *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"feature_flags,omitempty"`
-		Info *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"info,omitempty"`
-		IsolationSegments *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"isolation_segments,omitempty"`
-		Jobs *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"jobs,omitempty"`
-		OrganizationQuotas *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"organization_quotas,omitempty"`
-		Organizations *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"organizations,omitempty"`
-		Packages *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"packages,omitempty"`
-		Processes *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"processes,omitempty"`
-		ResourceMatches *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"resource_matches,omitempty"`
-		Roles *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"roles,omitempty"`
-		Routes *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"routes,omitempty"`
-		SecurityGroups *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"security_groups,omitempty"`
-		Self *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"self,omitempty"`
-		ServiceBrokers *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"service_brokers,omitempty"`
-		ServiceCredentialBindings *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"service_credential_bindings,omitempty"`
-		ServiceInstances *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"service_instances,omitempty"`
-		ServiceOfferings *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"service_offerings,omitempty"`
-		ServicePlanVisibilities *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"service_plan_visibilities,omitempty"`
-		ServicePlans *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"service_plans,omitempty"`
-		ServiceRouteBindings *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"service_route_bindings,omitempty"`
-		ServiceUsageEvents *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"service_usage_events,omitempty"`
-		Sidecars *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"sidecars,omitempty"`
-		SpaceQuotas *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"space_quotas,omitempty"`
-		Spaces *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"spaces,omitempty"`
-		Stacks *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"stacks,omitempty"`
-		Tasks *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"tasks,omitempty"`
-		Users *struct {
-			// Href The URL of the link.
-			Href string `json:"href"`
-
-			// Meta An optional field containing metadata about the link, such as its title, the type of content it points to, and more.
-			Meta *map[string]interface{} `json:"meta,omitempty"`
-
-			// Method An optional field specifying the HTTP method to use when following the URL.
-			Method *string `json:"method,omitempty"`
-		} `json:"users,omitempty"`
-	} `json:"links,omitempty"`
+// Root defines model for root.
+type Root struct {
+	// Links A collection of API components and their root endpoints.
+	Links struct {
+		AppSsh            *Link `json:"app_ssh,omitempty"`
+		CloudControllerV2 *Link `json:"cloud_controller_v2,omitempty"`
+		CloudControllerV3 *Link `json:"cloud_controller_v3,omitempty"`
+		Credhub           *Link `json:"credhub,omitempty"`
+		LogCache          *Link `json:"log_cache,omitempty"`
+		LogStream         *Link `json:"log_stream,omitempty"`
+		Logging           *Link `json:"logging,omitempty"`
+		Login             *Link `json:"login,omitempty"`
+		NetworkPolicyV0   *Link `json:"network_policy_v0,omitempty"`
+		NetworkPolicyV1   *Link `json:"network_policy_v1,omitempty"`
+		Routing           *Link `json:"routing,omitempty"`
+		Self              *Link `json:"self,omitempty"`
+		Uaa               *Link `json:"uaa,omitempty"`
+	} `json:"links"`
 }
-
-// N401Unauthorized defines model for 401Unauthorized.
-type N401Unauthorized = Error
-
-// N403Forbidden defines model for 403Forbidden.
-type N403Forbidden = Error
-
-// N500InternalServerError defines model for 500InternalServerError.
-type N500InternalServerError = Error
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
-	// Get root
+	// Get API root metadata
 	// (GET /)
-	GetRoot(w http.ResponseWriter, r *http.Request)
+	GetApiRoot(w http.ResponseWriter, r *http.Request)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -409,11 +64,11 @@ type ServerInterfaceWrapper struct {
 
 type MiddlewareFunc func(http.Handler) http.Handler
 
-// GetRoot operation middleware
-func (siw *ServerInterfaceWrapper) GetRoot(w http.ResponseWriter, r *http.Request) {
+// GetApiRoot operation middleware
+func (siw *ServerInterfaceWrapper) GetApiRoot(w http.ResponseWriter, r *http.Request) {
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.GetRoot(w, r)
+		siw.Handler.GetApiRoot(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -543,7 +198,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
-	m.HandleFunc("GET "+options.BaseURL+"/", wrapper.GetRoot)
+	m.HandleFunc("GET "+options.BaseURL+"/", wrapper.GetApiRoot)
 
 	return m
 }
