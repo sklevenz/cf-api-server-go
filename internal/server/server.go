@@ -28,7 +28,17 @@ func NewHTTPServer(addr string, cfgDir string, semver string) (*http.Server, err
 
 	outerMux.Handle("/", apiHandler) // forward everything else to oapi
 
-	wrappedHandler := middleware.LoggingMiddleware(outerMux) // Wrap the handler with logging middleware
+	// 404-Fallback-Wrapper
+	fallbackWrapper := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		h, pattern := outerMux.Handler(r)
+		if pattern == "" || (r.URL.Path != "/" && pattern == "/") {
+			http.NotFound(w, r)
+			return
+		}
+		h.ServeHTTP(w, r)
+	})
+
+	wrappedHandler := middleware.LoggingMiddleware(fallbackWrapper) // Wrap the handler with logging middleware
 
 	return &http.Server{
 		Handler: wrappedHandler,
