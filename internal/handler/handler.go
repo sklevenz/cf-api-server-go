@@ -7,13 +7,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/sklevenz/cf-api-server/internal/generated"
+	"github.com/sklevenz/cf-api-server/internal/gen"
 	"github.com/sklevenz/cf-api-server/internal/logger"
 	"github.com/sklevenz/cf-api-server/internal/testutil"
 )
 
 // ensure that we've conformed to the `ServerInterface` with a compile-time check
-var _ generated.ServerInterface = (*Server)(nil)
+var _ gen.ServerInterface = (*Server)(nil)
 
 type VersionInfo struct {
 	SemanticVersion string `json:"semanticVersion"`
@@ -21,7 +21,7 @@ type VersionInfo struct {
 type Server struct {
 	absCfgDir    string
 	favicon      *[]byte
-	rootDocument *generated.Root
+	rootDocument *gen.Root
 	versionInfo  VersionInfo
 }
 
@@ -89,7 +89,7 @@ func (srv *Server) loadRootDocument() {
 	}
 	logger.Log.Debug("After template processing: \n%s", &buf)
 
-	var root generated.Root
+	var root gen.Root
 	if err := json.Unmarshal(buf.Bytes(), &root); err != nil {
 		logger.Log.Error("failed to unmarshal root JSON: %v", err)
 	}

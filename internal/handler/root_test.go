@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sklevenz/cf-api-server/internal/generated"
+	gen "github.com/sklevenz/cf-api-server/internal/gen"
 	"github.com/sklevenz/cf-api-server/internal/handler"
 	"github.com/sklevenz/cf-api-server/internal/httpx"
 )
@@ -34,7 +34,7 @@ func TestGetRoot(t *testing.T) {
 		t.Errorf("expected %q %q, got %q", httpx.HeaderContentType, httpx.ContentTypeJSON, contentType)
 	}
 
-	var root generated.Root
+	var root gen.Root
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("failed to read response body: %v", err)

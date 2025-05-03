@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/sklevenz/cf-api-server/internal/logger"
@@ -19,7 +20,7 @@ func main() {
 		cfgDir      = flag.String("cfgDir", "./cfg", "Path to configuration directory")
 		logFormat   = flag.String("logFormat", "text", "Log output format: text or json")
 		logLevelStr = flag.String("logLevel", "INFO", "Log level: DEBUG, INFO, WARNING, ERROR")
-		logFilePath = flag.String("logFilePath", "./gen/cf-api-server.log", "Path to log file")
+		logFilePath = flag.String("logFilePath", "./logs/cf-api-server.log", "Path to log file")
 		verbose     = flag.Bool("v", false, "Shortcut for -logLevel=DEBUG")
 		logLevel    logger.LogLevel
 	)
@@ -34,6 +35,10 @@ func main() {
 	jsonOut := false
 	if *logFormat == "json" {
 		jsonOut = true
+	}
+
+	if err := os.MkdirAll(filepath.Dir(*logFilePath), 0755); err != nil {
+		log.Fatalf("Failed to create log directory: %v", err)
 	}
 
 	file, err := os.OpenFile(*logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)

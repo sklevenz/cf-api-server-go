@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sklevenz/cf-api-server/internal/generated"
+	gen "github.com/sklevenz/cf-api-server/internal/gen"
 	"github.com/sklevenz/cf-api-server/internal/handler"
 	"github.com/sklevenz/cf-api-server/internal/logger"
 	middleware "github.com/sklevenz/cf-api-server/internal/middelware"
@@ -18,8 +18,8 @@ func NewHTTPServer(addr string, cfgDir string, semver string) (*http.Server, err
 		return nil, err
 	}
 
-	apiMux := http.NewServeMux()                        // Create a new HTTP request multiplexer
-	apiHandler := generated.HandlerFromMux(srv, apiMux) // Bind generated routes to the mux
+	apiMux := http.NewServeMux()                  // Create a new HTTP request multiplexer
+	apiHandler := gen.HandlerFromMux(srv, apiMux) // Bind generated routes to the mux
 
 	outerMux := http.NewServeMux()
 	outerMux.HandleFunc("/favicon.ico", srv.GetFaviconHandler) // custom route

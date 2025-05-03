@@ -26,8 +26,9 @@ const (
 type Logger struct {
 	level      LogLevel  // Minimum log level to output
 	jsonOut    bool      // Enable JSON formatted output
-	writer     io.Writer // Output destination (stdout or test buffer)
 	fileWriter io.Writer // File output destination (if any)
+	stdWriter  io.Writer // Standard output destination
+	errWriter  io.Writer // Error output destination
 }
 
 // New creates a new Logger instance.
@@ -38,8 +39,9 @@ func New(level LogLevel, jsonOut bool, fileWriter2 io.Writer) *Logger {
 	return &Logger{
 		level:      level,
 		jsonOut:    jsonOut,
-		writer:     os.Stdout,
 		fileWriter: fileWriter2,
+		stdWriter:  os.Stdout,
+		errWriter:  os.Stderr,
 	}
 }
 
@@ -63,7 +65,12 @@ func (l *Logger) log(lvl string, msg string, fields map[string]interface{}) {
 			out += " " + fmt.Sprintf("%v", fields)
 		}
 	}
-	fmt.Fprintln(l.writer, out)
+	if lvl == "ERROR" {
+		fmt.Fprintln(l.errWriter, out)
+
+	} else {
+		fmt.Fprintln(l.stdWriter, out)
+	}
 	if l.fileWriter != nil {
 		fmt.Fprintln(l.fileWriter, out)
 	}
