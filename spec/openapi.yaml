@@ -258,3 +258,9 @@ components:
                   app_ssh:
                     $ref: '#/components/schemas/link'
                     description: Endpoint for SSH access to running application instances.
+                  version:
+                    $ref: '#/components/schemas/link'
+                    description: Endpoint for server version information.
+                  health:
+                    $ref: '#/components/schemas/link'
+                    description: Health endpoint.
