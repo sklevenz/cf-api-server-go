@@ -6,7 +6,7 @@ LOG_DIR := logs
 DOCKER_IMAGE := $(APP_NAME):latest
 GEN_OUTPUT=./internal/gen/api_gen.go
 
-.PHONY: default all build generate test verbose run clean
+.PHONY: default all build generate test verbose run clean copy-openapi
 
 default: all
 
@@ -20,6 +20,7 @@ help:
 	@echo "  verbose       Run tests verbose"
 	@echo "  run           Build and run the server (logs to $(LOG_FILE))"
 	@echo "  clean         Remove binaries and logs"
+	@echo "  copy-openapi  Copy openapi spec"
 
 
 build: prepare-dirs
@@ -47,3 +48,14 @@ prepare-dirs:
 clean:
 	rm -rf $(BIN_DIR) $(LOG_DIR)
 
+copy-openapi:
+	@SRC="../cf-api-spec/gen/openapi.yaml"; \
+	DST="./spec"; \
+	if [ ! -f "$$SRC" ]; then \
+		echo "OpenAPI spec not found at '$$SRC'"; \
+		exit 1; \
+	fi; \
+	echo "📄 Copying OpenAPI spec from '$$SRC' to '$$DST'..."; \
+	cp "$$SRC" "$$DST"; \
+	echo "OpenAPI spec copied successfully."; \
+	echo "To generate a new server, run: make generate"
