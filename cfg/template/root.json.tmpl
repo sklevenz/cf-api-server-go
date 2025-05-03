@@ -6,12 +6,7 @@
         "version": "{{ .Version }}"
       }
     },
-    "cloud_controller_v2": {
-      "href": "{{ .BaseURL }}/v2",
-      "meta": {
-        "version": "2.150.0"
-      }
-    },
+    "cloud_controller_v2": null,
     "cloud_controller_v3": {
       "href": "{{ .BaseURL }}/v3",
       "meta": {
@@ -80,6 +75,12 @@
         "version": "1.0.0",
         "host_key_fingerprint": "SHA256:abc123def456..."
       }
+    },
+    "version": {
+      "href": "{{ .BaseURL }}/version"
+    },
+    "health": {
+      "href": "{{ .BaseURL }}/health"
     }
   }
 }

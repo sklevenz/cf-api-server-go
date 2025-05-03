@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/sklevenz/cf-api-server/internal/logger"
@@ -34,6 +35,10 @@ func main() {
 	jsonOut := false
 	if *logFormat == "json" {
 		jsonOut = true
+	}
+
+	if err := os.MkdirAll(filepath.Dir(*logFilePath), 0755); err != nil {
+		log.Fatalf("Failed to create log directory: %v", err)
 	}
 
 	file, err := os.OpenFile(*logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)

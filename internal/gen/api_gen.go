@@ -36,6 +36,7 @@ type Root struct {
 		CloudControllerV2 *Link `json:"cloud_controller_v2,omitempty"`
 		CloudControllerV3 *Link `json:"cloud_controller_v3,omitempty"`
 		Credhub           *Link `json:"credhub,omitempty"`
+		Health            *Link `json:"health,omitempty"`
 		LogCache          *Link `json:"log_cache,omitempty"`
 		LogStream         *Link `json:"log_stream,omitempty"`
 		Logging           *Link `json:"logging,omitempty"`
@@ -45,6 +46,7 @@ type Root struct {
 		Routing           *Link `json:"routing,omitempty"`
 		Self              *Link `json:"self,omitempty"`
 		Uaa               *Link `json:"uaa,omitempty"`
+		Version           *Link `json:"version,omitempty"`
 	} `json:"links"`
 }
 
