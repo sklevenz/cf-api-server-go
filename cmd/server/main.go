@@ -19,7 +19,7 @@ func main() {
 		cfgDir      = flag.String("cfgDir", "./cfg", "Path to configuration directory")
 		logFormat   = flag.String("logFormat", "text", "Log output format: text or json")
 		logLevelStr = flag.String("logLevel", "INFO", "Log level: DEBUG, INFO, WARNING, ERROR")
-		logFilePath = flag.String("logFilePath", "./gen/cf-api-server.log", "Path to log file")
+		logFilePath = flag.String("logFilePath", "./logs/cf-api-server.log", "Path to log file")
 		verbose     = flag.Bool("v", false, "Shortcut for -logLevel=DEBUG")
 		logLevel    logger.LogLevel
 	)
