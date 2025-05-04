@@ -8,7 +8,7 @@ GEN_OUTPUT=./internal/gen/api_gen.go
 
 .PHONY: default all build generate test verbose run clean copy-openapi
 
-default: all
+default: help
 
 all: clean generate test build
 
@@ -18,7 +18,7 @@ help:
 	@echo "  generate      Run code generation"
 	@echo "  test          Run tests"
 	@echo "  verbose       Run tests verbose"
-	@echo "  run           Build and run the server (logs to $(LOG_FILE))"
+	@echo "  run           Build and run the server (logs to ./$(LOG_DIR))"
 	@echo "  clean         Remove binaries and logs"
 	@echo "  copy-openapi  Copy openapi spec"
 
