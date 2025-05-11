@@ -6,6 +6,7 @@
 package gen
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -16,16 +17,23 @@ type Link struct {
 	Href string `json:"href"`
 
 	// Meta Metadata related to the resource.
-	Meta *struct {
-		// HostKeyFingerprint The fingerprint of the host's public key, used for security verification.
-		HostKeyFingerprint *string `json:"host_key_fingerprint,omitempty"`
+	Meta *Link_Meta `json:"meta,omitempty"`
+}
 
-		// OauthClient The OAuth client identifier used for authentication purposes.
-		OauthClient *string `json:"oauth_client,omitempty"`
+// Link_Meta Metadata related to the resource.
+type Link_Meta struct {
+	// Experimental Indicates whether the linked API is experimental.
+	Experimental *bool `json:"experimental,omitempty"`
 
-		// Version The version identifier of the referenced resource.
-		Version *string `json:"version,omitempty"`
-	} `json:"meta,omitempty"`
+	// HostKeyFingerprint The fingerprint of the host's public key, used for security verification.
+	HostKeyFingerprint *string `json:"host_key_fingerprint,omitempty"`
+
+	// OauthClient The OAuth client identifier used for authentication purposes.
+	OauthClient *string `json:"oauth_client,omitempty"`
+
+	// Version The version identifier of the referenced resource.
+	Version              *string                `json:"version,omitempty"`
+	AdditionalProperties map[string]interface{} `json:"-"`
 }
 
 // Root defines model for root.
@@ -50,11 +58,170 @@ type Root struct {
 	} `json:"links"`
 }
 
+// V3 defines model for v3.
+type V3 struct {
+	// Links A collection of Cloud Controller V3 components and their root endpoints.
+	Links struct {
+		Apps                      *Link `json:"apps,omitempty"`
+		Buildpacks                *Link `json:"buildpacks,omitempty"`
+		Builds                    *Link `json:"builds,omitempty"`
+		Deployments               *Link `json:"deployments,omitempty"`
+		Domains                   *Link `json:"domains,omitempty"`
+		Droplets                  *Link `json:"droplets,omitempty"`
+		EnvironmentVariableGroups *Link `json:"environment_variable_groups,omitempty"`
+		FeatureFlags              *Link `json:"feature_flags,omitempty"`
+		Info                      *Link `json:"info,omitempty"`
+		IsolationSegments         *Link `json:"isolation_segments,omitempty"`
+		Manifests                 *Link `json:"manifests,omitempty"`
+		OrganizationQuotas        *Link `json:"organization_quotas,omitempty"`
+		Organizations             *Link `json:"organizations,omitempty"`
+		Packages                  *Link `json:"packages,omitempty"`
+		PrivateDomains            *Link `json:"private_domains,omitempty"`
+		Processes                 *Link `json:"processes,omitempty"`
+		ResourceMatches           *Link `json:"resource_matches,omitempty"`
+		Resources                 *Link `json:"resources,omitempty"`
+		Revisions                 *Link `json:"revisions,omitempty"`
+		Roles                     *Link `json:"roles,omitempty"`
+		RouteMappings             *Link `json:"route_mappings,omitempty"`
+		Routes                    *Link `json:"routes,omitempty"`
+		SecurityGroups            *Link `json:"security_groups,omitempty"`
+		Self                      *Link `json:"self,omitempty"`
+		ServiceBrokers            *Link `json:"service_brokers,omitempty"`
+		ServiceCredentialBindings *Link `json:"service_credential_bindings,omitempty"`
+		ServiceInstances          *Link `json:"service_instances,omitempty"`
+		ServiceOfferings          *Link `json:"service_offerings,omitempty"`
+		ServicePlans              *Link `json:"service_plans,omitempty"`
+		SharedDomains             *Link `json:"shared_domains,omitempty"`
+		Sidecars                  *Link `json:"sidecars,omitempty"`
+		SpaceQuotas               *Link `json:"space_quotas,omitempty"`
+		Spaces                    *Link `json:"spaces,omitempty"`
+		Stacks                    *Link `json:"stacks,omitempty"`
+		Tasks                     *Link `json:"tasks,omitempty"`
+		Users                     *Link `json:"users,omitempty"`
+	} `json:"links"`
+}
+
+// Getter for additional properties for Link_Meta. Returns the specified
+// element and whether it was found
+func (a Link_Meta) Get(fieldName string) (value interface{}, found bool) {
+	if a.AdditionalProperties != nil {
+		value, found = a.AdditionalProperties[fieldName]
+	}
+	return
+}
+
+// Setter for additional properties for Link_Meta
+func (a *Link_Meta) Set(fieldName string, value interface{}) {
+	if a.AdditionalProperties == nil {
+		a.AdditionalProperties = make(map[string]interface{})
+	}
+	a.AdditionalProperties[fieldName] = value
+}
+
+// Override default JSON handling for Link_Meta to handle AdditionalProperties
+func (a *Link_Meta) UnmarshalJSON(b []byte) error {
+	object := make(map[string]json.RawMessage)
+	err := json.Unmarshal(b, &object)
+	if err != nil {
+		return err
+	}
+
+	if raw, found := object["experimental"]; found {
+		err = json.Unmarshal(raw, &a.Experimental)
+		if err != nil {
+			return fmt.Errorf("error reading 'experimental': %w", err)
+		}
+		delete(object, "experimental")
+	}
+
+	if raw, found := object["host_key_fingerprint"]; found {
+		err = json.Unmarshal(raw, &a.HostKeyFingerprint)
+		if err != nil {
+			return fmt.Errorf("error reading 'host_key_fingerprint': %w", err)
+		}
+		delete(object, "host_key_fingerprint")
+	}
+
+	if raw, found := object["oauth_client"]; found {
+		err = json.Unmarshal(raw, &a.OauthClient)
+		if err != nil {
+			return fmt.Errorf("error reading 'oauth_client': %w", err)
+		}
+		delete(object, "oauth_client")
+	}
+
+	if raw, found := object["version"]; found {
+		err = json.Unmarshal(raw, &a.Version)
+		if err != nil {
+			return fmt.Errorf("error reading 'version': %w", err)
+		}
+		delete(object, "version")
+	}
+
+	if len(object) != 0 {
+		a.AdditionalProperties = make(map[string]interface{})
+		for fieldName, fieldBuf := range object {
+			var fieldVal interface{}
+			err := json.Unmarshal(fieldBuf, &fieldVal)
+			if err != nil {
+				return fmt.Errorf("error unmarshaling field %s: %w", fieldName, err)
+			}
+			a.AdditionalProperties[fieldName] = fieldVal
+		}
+	}
+	return nil
+}
+
+// Override default JSON handling for Link_Meta to handle AdditionalProperties
+func (a Link_Meta) MarshalJSON() ([]byte, error) {
+	var err error
+	object := make(map[string]json.RawMessage)
+
+	if a.Experimental != nil {
+		object["experimental"], err = json.Marshal(a.Experimental)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'experimental': %w", err)
+		}
+	}
+
+	if a.HostKeyFingerprint != nil {
+		object["host_key_fingerprint"], err = json.Marshal(a.HostKeyFingerprint)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'host_key_fingerprint': %w", err)
+		}
+	}
+
+	if a.OauthClient != nil {
+		object["oauth_client"], err = json.Marshal(a.OauthClient)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'oauth_client': %w", err)
+		}
+	}
+
+	if a.Version != nil {
+		object["version"], err = json.Marshal(a.Version)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'version': %w", err)
+		}
+	}
+
+	for fieldName, field := range a.AdditionalProperties {
+		object[fieldName], err = json.Marshal(field)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling '%s': %w", fieldName, err)
+		}
+	}
+	return json.Marshal(object)
+}
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Get API root metadata
 	// (GET /)
 	GetApiRoot(w http.ResponseWriter, r *http.Request)
+	// Get API root
+	// (GET /v3)
+	GetApiV3Root(w http.ResponseWriter, r *http.Request)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -71,6 +238,20 @@ func (siw *ServerInterfaceWrapper) GetApiRoot(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetApiRoot(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetApiV3Root operation middleware
+func (siw *ServerInterfaceWrapper) GetApiV3Root(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetApiV3Root(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -201,6 +382,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	}
 
 	m.HandleFunc("GET "+options.BaseURL+"/", wrapper.GetApiRoot)
+	m.HandleFunc("GET "+options.BaseURL+"/v3", wrapper.GetApiV3Root)
 
 	return m
 }

@@ -18,17 +18,21 @@ func NewHTTPServer(addr string, cfgDir string, semver string) (*http.Server, err
 		return nil, err
 	}
 
-	apiMux := http.NewServeMux()                  // Create a new HTTP request multiplexer
-	apiHandler := gen.HandlerFromMux(srv, apiMux) // Bind generated routes to the mux
+	apiMux := http.NewServeMux() // Create a new HTTP request multiplexer
+	apiHandler := gen.HandlerWithOptions(srv, gen.StdHTTPServerOptions{
+		BaseURL:    "/v3", // use "/api" if you want to mount the API under a prefix
+		BaseRouter: apiMux,
+	})
 
 	outerMux := http.NewServeMux()
-	outerMux.HandleFunc("/favicon.ico", srv.GetFaviconHandler) // custom route
-	outerMux.HandleFunc("/health", srv.GetHealthHandler)       // custom route
-	outerMux.HandleFunc("/version", srv.GetVersionHandler)     // custom route
+	outerMux.HandleFunc("/favicon.ico", srv.GetFaviconHandler) // custom non-OpenAPI route
+	outerMux.HandleFunc("/health", srv.GetHealthHandler)       // custom non-OpenAPI route
+	outerMux.HandleFunc("/version", srv.GetVersionHandler)     // custom non-OpenAPI route
 
-	outerMux.Handle("/", apiHandler) // forward everything else to oapi
+	outerMux.Handle("/v3/", apiHandler)      // forward all other requests to OpenAPI handler
+	outerMux.HandleFunc("/", srv.GetApiRoot) //
 
-	// 404-Fallback-Wrapper
+	// 404 fallback wrapper
 	fallbackWrapper := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h, pattern := outerMux.Handler(r)
 		if pattern == "" || (r.URL.Path != "/" && pattern == "/") {
@@ -38,7 +42,7 @@ func NewHTTPServer(addr string, cfgDir string, semver string) (*http.Server, err
 		h.ServeHTTP(w, r)
 	})
 
-	wrappedHandler := middleware.LoggingMiddleware(fallbackWrapper) // Wrap the handler with logging middleware
+	wrappedHandler := middleware.LoggingMiddleware(fallbackWrapper) // add logging middleware around the final handler
 
 	return &http.Server{
 		Handler: wrappedHandler,

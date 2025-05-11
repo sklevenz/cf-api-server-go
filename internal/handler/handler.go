@@ -23,6 +23,7 @@ type Server struct {
 	favicon      *[]byte
 	rootDocument *gen.Root
 	versionInfo  VersionInfo
+	v3Document   *gen.V3
 }
 
 func NewServer(absCfgDir string, semver string) (*Server, error) {
@@ -97,4 +98,36 @@ func (srv *Server) loadRootDocument() {
 	logger.Log.Debug("Parsed root document: \n%+v", root)
 
 	srv.rootDocument = &root
+}
+
+func (srv *Server) loadV3Document() {
+	filePath := filepath.Join(srv.absCfgDir, "template", "v3.json.tmpl")
+	logger.Log.Info("Read v3 document: %v", filePath)
+
+	template, err := template.ParseFiles(filePath)
+	if err != nil {
+		logger.Log.Error("failed to parse v3 template: %v", err)
+	}
+
+	var buf bytes.Buffer
+	err = template.Execute(&buf, struct {
+		BaseURL string
+		Version string
+	}{
+		BaseURL: "http://localhost:8080",
+		Version: srv.versionInfo.SemanticVersion,
+	})
+	if err != nil {
+		logger.Log.Error("failed to render root template: %v", err)
+	}
+	logger.Log.Debug("After template processing: \n%s", &buf)
+
+	var v3 gen.V3
+	if err := json.Unmarshal(buf.Bytes(), &v3); err != nil {
+		logger.Log.Error("failed to unmarshal root JSON: %v", err)
+	}
+
+	logger.Log.Debug("Parsed v3 document: \n%+v", v3)
+
+	srv.v3Document = &v3
 }

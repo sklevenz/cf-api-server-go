@@ -158,6 +158,22 @@ paths:
           $ref: '#/components/responses/400'
         '500':
           $ref: '#/components/responses/500'
+  /v3:
+    get:
+      summary: Get API root
+      description: |
+        Global API Root for Cloud Foundry V3.
+      operationId: getApiV3Root
+      security: []
+      tags:
+        - Root
+      responses:
+        '200':
+          $ref: '#/components/responses/v3'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
 components:
   securitySchemes:
     oauth:
@@ -192,6 +208,9 @@ components:
           type: object
           description: Metadata related to the resource.
           properties:
+            experimental:
+              type: boolean
+              description: Indicates whether the linked API is experimental.
             version:
               type: string
               description: The version identifier of the referenced resource.
@@ -201,6 +220,7 @@ components:
             oauth_client:
               type: string
               description: The OAuth client identifier used for authentication purposes.
+          additionalProperties: true
   responses:
     '400':
       description: Bad Request
@@ -264,3 +284,89 @@ components:
                   health:
                     $ref: '#/components/schemas/link'
                     description: Health endpoint.
+    v3:
+      description: List of V3 API components and their endpoints
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - links
+            properties:
+              links:
+                type: object
+                description: A collection of Cloud Controller V3 components and their root endpoints.
+                properties:
+                  self:
+                    $ref: '#/components/schemas/link'
+                    description: Link to this API index document.
+                  apps:
+                    $ref: '#/components/schemas/link'
+                  builds:
+                    $ref: '#/components/schemas/link'
+                  buildpacks:
+                    $ref: '#/components/schemas/link'
+                  deployments:
+                    $ref: '#/components/schemas/link'
+                  domains:
+                    $ref: '#/components/schemas/link'
+                  droplets:
+                    $ref: '#/components/schemas/link'
+                  environment_variable_groups:
+                    $ref: '#/components/schemas/link'
+                  feature_flags:
+                    $ref: '#/components/schemas/link'
+                  info:
+                    $ref: '#/components/schemas/link'
+                  isolation_segments:
+                    $ref: '#/components/schemas/link'
+                  manifests:
+                    $ref: '#/components/schemas/link'
+                  organization_quotas:
+                    $ref: '#/components/schemas/link'
+                  organizations:
+                    $ref: '#/components/schemas/link'
+                  packages:
+                    $ref: '#/components/schemas/link'
+                  private_domains:
+                    $ref: '#/components/schemas/link'
+                  processes:
+                    $ref: '#/components/schemas/link'
+                  resource_matches:
+                    $ref: '#/components/schemas/link'
+                  resources:
+                    $ref: '#/components/schemas/link'
+                  revisions:
+                    $ref: '#/components/schemas/link'
+                  roles:
+                    $ref: '#/components/schemas/link'
+                  route_mappings:
+                    $ref: '#/components/schemas/link'
+                  routes:
+                    $ref: '#/components/schemas/link'
+                  security_groups:
+                    $ref: '#/components/schemas/link'
+                  service_brokers:
+                    $ref: '#/components/schemas/link'
+                  service_credential_bindings:
+                    $ref: '#/components/schemas/link'
+                  service_instances:
+                    $ref: '#/components/schemas/link'
+                  service_offerings:
+                    $ref: '#/components/schemas/link'
+                  service_plans:
+                    $ref: '#/components/schemas/link'
+                  shared_domains:
+                    $ref: '#/components/schemas/link'
+                  sidecars:
+                    $ref: '#/components/schemas/link'
+                  space_quotas:
+                    $ref: '#/components/schemas/link'
+                  spaces:
+                    $ref: '#/components/schemas/link'
+                  stacks:
+                    $ref: '#/components/schemas/link'
+                  tasks:
+                    $ref: '#/components/schemas/link'
+                  users:
+                    $ref: '#/components/schemas/link'
